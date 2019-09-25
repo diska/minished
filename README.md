@@ -1,0 +1,2 @@
+# minished
+minimal GLSL editor
