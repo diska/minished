@@ -1,8 +1,8 @@
 <style>textarea{background-color: bisque;}</style>
 <canvas width="256" height="256"></canvas><hr/>
-<textarea id="VS" cols="64" rows="15"></textarea>
-<textarea id="FS" cols="64" rows="15"></textarea>
-<textarea id="LOG" cols="64" rows="15"></textarea>
+<textarea id="VS" cols="64" rows="15" spellcheck="false" oninput="redraw()"></textarea>
+<textarea id="FS" cols="64" rows="15" spellcheck="false" oninput="redraw()"></textarea>
+<textarea id="LOG" cols="64" rows="15" spellcheck="false"></textarea>
 <script>"use strict;"
 let cx=document.querySelector("canvas").getContext("webgl");
 let pg=cx.createProgram();
@@ -12,17 +12,15 @@ VS.value=`attribute vec4 p;\nvoid main(){\n\tgl_PointSize=128.;\n\tgl_Position=p
 FS.value=`void main(){\n\tgl_FragColor=vec4(1);\n}`;
 function redraw(){
 	cx.clearColor(0,0,0, 1);cx.clear(0x4000);
-	getProgram(VS.value, FS.value);
+	setProgram(VS.value, FS.value);
 	cx.useProgram(pg);	cx.drawArrays(0, 0,1);
-	requestAnimationFrame(redraw);
-};	requestAnimationFrame(redraw);
-function getProgram(){
-	cx.shaderSource(vs, VS.value);	cx.compileShader(vs);
-	cx.shaderSource(fs, FS.value);	cx.compileShader(fs);
+};	redraw();
+function setProgram(vsrc, fsrc){
+	cx.shaderSource(vs, vsrc);	cx.compileShader(vs);
+	cx.shaderSource(fs, fsrc);	cx.compileShader(fs);
 	cx.linkProgram(pg);	LOG.value="";
 	LOG.value+=`vs:${cx.getShaderInfoLog(vs)}\n`;
 	LOG.value+=`fs:${cx.getShaderInfoLog(fs)}\n`;
 	LOG.value+=`pg:${cx.getProgramInfoLog(pg)}\n`;
-	return pg;
 }
 </script>
