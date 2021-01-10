@@ -14,7 +14,7 @@ function setProgram(vsrc, fsrc){
 	cx.shaderSource(vs, vsrc);	cx.compileShader(vs);
 	cx.shaderSource(fs, fsrc);	cx.compileShader(fs);
 	cx.linkProgram(pg);	cx.validateProgram(pg);
-	if(cx.getProgramParameter(pg,cx.VALIDATE_STATUS))return pg;
+	if(cx.getProgramParameter(pg,cx.LINK_STATUS))return pg;
 	let log=`fs:${cx.getShaderInfoLog(fs)}\npg:${cx.getProgramInfoLog(pg)}\n`;
 	log+=`vs:${cx.getShaderInfoLog(vs)}\n`;	throw log;
 }
